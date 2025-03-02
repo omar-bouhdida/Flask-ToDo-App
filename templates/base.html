@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 75%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .add-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .add-btn:hover {
+            background: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .update-btn {
+            background: #ffc107;
+            color: black;
+        }
+
+        .update-btn:hover {
+            background: #e0a800;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>📝 To-Do List</h1>
+    <div class="container">
+        <form action="{{ url_for('add') }}" method="post">
+            <input type="text" name="title" placeholder="Enter a task" required>
+            <button type="submit" class="add-btn">Add</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            {% for todo in todo_list %}
+            <tr>
+                <td>{{ todo.title }}</td>
+                <td>{{ "✔️ Completed" if todo.complete else "❌ Not Done" }}</td>
+                <td class="btn-group">
+                    <a href="{{ url_for('update', todo_id=todo.id) }}">
+                        <button class="update-btn">Toggle</button>
+                    </a>
+                    <a href="{{ url_for('delete', todo_id=todo.id) }}">
+                        <button class="delete-btn">Delete</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
